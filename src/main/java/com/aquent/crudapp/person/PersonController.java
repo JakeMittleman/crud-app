@@ -3,12 +3,10 @@ package com.aquent.crudapp.person;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aquent.crudapp.client.ClientService;
+import com.aquent.crudapp.util.Formatter;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -21,9 +19,11 @@ public class PersonController {
     public static final String COMMAND_DELETE = "Delete";
 
     private final PersonService personService;
+    private final ClientService clientService;
 
-    public PersonController(PersonService personService) {
+    public PersonController(PersonService personService, ClientService clientService) {
         this.personService = personService;
+        this.clientService = clientService;
     }
 
     /**
@@ -47,6 +47,7 @@ public class PersonController {
     public ModelAndView create() {
         ModelAndView mav = new ModelAndView("person/create");
         mav.addObject("person", new Person());
+        mav.addObject("clients", clientService.listClients());
         mav.addObject("errors", new ArrayList<String>());
         return mav;
     }
@@ -83,6 +84,7 @@ public class PersonController {
     public ModelAndView edit(@PathVariable Integer personId) {
         ModelAndView mav = new ModelAndView("person/edit");
         mav.addObject("person", personService.readPerson(personId));
+        mav.addObject("clients", clientService.listClients());
         mav.addObject("errors", new ArrayList<String>());
         return mav;
     }
@@ -97,6 +99,7 @@ public class PersonController {
      */
     @PostMapping(value = "edit")
     public ModelAndView edit(Person person) {
+        System.out.println(person);
         List<String> errors = personService.validatePerson(person);
         if (errors.isEmpty()) {
             personService.updatePerson(person);

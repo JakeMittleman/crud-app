@@ -7,6 +7,7 @@
     <title>Edit Person</title>
   </head>
   <body>
+    <div th:insert="fragments/header :: header"></div>
     <h1>Edit Person</h1>
     <th:block th:unless="${#lists.isEmpty(errors)}">
       <p>Please correct the following errors in your submission:</p>
@@ -39,6 +40,11 @@
       <br/>
       <label for="zipCode">Zip Code:</label>
       <input type="text" name="zipCode" th:value="${person.zipCode}"/>
+      <br/>
+      <label for="clientName">Client:</label>
+      <select th:field="${person.clientName}">
+        <option th:each="client : ${clients}" th:value="${client.clientName}" th:text="${client.clientName}"></option>
+      </select>
       <br/>
       <input type="submit" name="Submit" value="Submit"/>
     </form>
