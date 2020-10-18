@@ -1,10 +1,13 @@
-package com.aquent.crudapp.client;
+package com.aquent.crudapp.dto;
 
-import com.aquent.crudapp.person.Person;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,6 +15,9 @@ import java.util.List;
  */
 // Injects Getters and Setters for you (via Lombok) https://projectlombok.org/features/Data
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Client {
 
     private Integer clientId;
@@ -25,7 +31,7 @@ public class Client {
     private String websiteUri;
 
     @NotNull
-    @Size(min = 10, max = 10, message = "Phone number is required with length of 10")
+    @Size(min = 12, max = 12, message = "Phone number is required with length of 12")
     private String phoneNumber;
 
     @Size(min = 1, max = 50, message = "Street address is required with maximum length of 50")
@@ -43,5 +49,6 @@ public class Client {
     @Size(min = 5, max = 5, message = "Zip code is required with length 5")
     private String zipCode;
 
-    private List<Person> contacts;
+    @Builder.Default
+    private List<Person> contacts = new ArrayList<>();
 }

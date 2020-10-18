@@ -1,8 +1,11 @@
-package com.aquent.crudapp.client;
+package com.aquent.crudapp.service.client;
 
-import com.aquent.crudapp.person.Person;
-import com.aquent.crudapp.person.PersonDao;
+import com.aquent.crudapp.dto.Client;
+import com.aquent.crudapp.dao.client.ClientDao;
+import com.aquent.crudapp.dto.Person;
+import com.aquent.crudapp.dao.person.PersonDao;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

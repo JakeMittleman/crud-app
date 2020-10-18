@@ -1,6 +1,9 @@
-package com.aquent.crudapp.person;
+package com.aquent.crudapp.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -9,16 +12,19 @@ import javax.validation.constraints.Size;
  * The person entity corresponding to the "person" table in the database.
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Person {
 
     private Integer personId;
 
     @NotNull
-    @Size(min = 1, max = 50, message = "First name is required with maximum length of 50")
+    @Size(min = 1, max = 20, message = "First name is required with maximum length of 20")
     private String firstName;
 
     @NotNull
-    @Size(min = 1, max = 50, message = "Last name is required with maximum length of 50")
+    @Size(min = 1, max = 20, message = "Last name is required with maximum length of 20")
     private String lastName;
 
     @NotNull
@@ -30,7 +36,7 @@ public class Person {
     private String streetAddress;
 
     @NotNull
-    @Size(min = 1, max = 50, message = "City is required with maximum length of 50")
+    @Size(min = 1, max = 20, message = "City is required with maximum length of 20")
     private String city;
 
     @NotNull
