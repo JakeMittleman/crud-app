@@ -5,15 +5,30 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Delete Person</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
   </head>
   <body>
   <div th:insert="fragments/header :: header"></div>
-    <h1>Delete Person</h1>
-    <p>You are about to delete the person <th:block th:text="${person.firstName}" /> <th:block th:text="${person.lastName}" />:  Are you sure?</p>
+    <h1>Delete <th:block th:text="${person.firstName} + ' ' + ${person.lastName}"/>?</h1>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-4">
+        <div class="alert alert-danger justify-content-center">
+          <p>You are about to delete the person <th:block th:text="${person.firstName}" />
+            <th:block th:text="${person.lastName}" />:  Are you sure?</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container justify-content-center text-center">
     <form action="/person/delete" method="post">
       <input type="hidden" name="personId" th:value="${person.personId}"/>
-      <input type="submit" name="command" value="Cancel"/>
-      <input type="submit" name="command" value="Delete"/>
+      <input class="btn btn-secondary" type="submit" name="command" value="Cancel"/>
+      <input class="btn btn-danger" type="submit" name="command" value="Delete"/>
     </form>
+  </div>
   </body>
 </html>

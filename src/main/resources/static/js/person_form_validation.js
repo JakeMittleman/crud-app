@@ -124,13 +124,13 @@ form.addEventListener("submit", function(event) {
     for (let i = 0; i < objects.length; i++) {
         let element = objects[i];
         if (element.value === "") {
+            console.log("Hi")
             let error = errors[i][1];
-            error.innerText = errors[i][0] + " is required. Please fill out the " + errors[i][0];
+            error.innerText = errors[i][0] + " is required";
             error.hidden = false;
             valid = false;
         }
     }
-    console.log(valid)
     if (!valid) {
         event.preventDefault();
     }

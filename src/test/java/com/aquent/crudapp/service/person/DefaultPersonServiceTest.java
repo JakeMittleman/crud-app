@@ -30,7 +30,7 @@ class DefaultPersonServiceTest {
                 .city("Seattle")
                 .state("WA")
                 .zipCode("12345")
-                .clientName(null)
+                .client(null)
                 .build();
 
         int id = defaultPersonService.createPerson(personA);
@@ -54,7 +54,7 @@ class DefaultPersonServiceTest {
                 .city("Newark")
                 .state("NJ")
                 .zipCode("12345")
-                .clientName("Aquent")
+                .client(null)
                 .build();
 
         int id = defaultPersonService.createPerson(person);
@@ -76,8 +76,4 @@ class DefaultPersonServiceTest {
         Person retrievedPerson = defaultPersonService.readPerson(personA.getPersonId());
         assertEquals(newLastName, retrievedPerson.getLastName());
     }
-
-//    @Test
-//    void validatePerson() {
-//    }
 }

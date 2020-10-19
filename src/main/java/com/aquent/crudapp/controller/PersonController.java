@@ -6,6 +6,7 @@ import java.util.List;
 import com.aquent.crudapp.service.client.ClientService;
 import com.aquent.crudapp.dto.Person;
 import com.aquent.crudapp.service.person.PersonService;
+import com.aquent.crudapp.util.Formatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -76,6 +77,19 @@ public class PersonController {
     }
 
     /**
+     * Renders the single person page.
+     *
+     * @return single person view populated with the appropriate person
+     */
+    @GetMapping(value = "read/{personId}")
+    public ModelAndView read(@PathVariable Integer personId) {
+        ModelAndView mav = new ModelAndView("person/read");
+        mav.addObject("person", personService.readPerson(personId));
+        mav.addObject("formatter", new Formatter());
+        return mav;
+    }
+
+    /**
      * Renders an edit form for an existing person record.
      *
      * @param personId the ID of the person to edit
@@ -100,7 +114,6 @@ public class PersonController {
      */
     @PostMapping(value = "edit")
     public ModelAndView edit(Person person) {
-        System.out.println(person);
         List<String> errors = personService.validatePerson(person);
         if (errors.isEmpty()) {
             personService.updatePerson(person);

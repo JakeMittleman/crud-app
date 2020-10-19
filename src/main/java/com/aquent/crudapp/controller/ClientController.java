@@ -133,15 +133,10 @@ public class ClientController {
      */
     @PostMapping(value = "edit")
     public ModelAndView edit(Client client,
-                             @RequestParam(value = "newContacts") List<String> newContactList) {
+                             @RequestParam(value = "newContacts", required = false) List<String> newContactList) {
         List<String> errors = clientService.validateClient(client);
         if (errors.isEmpty()) {
-            List<Person> newContacts = personService.listPeople()
-                    .stream()
-                    .filter(person -> newContactList.contains(person.getFirstName() + ' ' + person.getLastName()))
-                    .collect(Collectors.toList());
-            client.setContacts(newContacts);
-            clientService.updateClient(client);
+            clientService.updateClient(client, newContactList);
             return new ModelAndView("redirect:/client/read/" + client.getClientId());
         } else {
             ModelAndView mav = new ModelAndView("client/edit");
@@ -149,6 +144,12 @@ public class ClientController {
             mav.addObject("errors", errors);
             return mav;
         }
+    }
+
+    @PostMapping(value = "remove/{clientId}/contact/{contactId}")
+    public ModelAndView remove(@PathVariable String clientId, @PathVariable String contactId) {
+        clientService.updateClient(clientId, contactId);
+        return new ModelAndView("redirect:/client/read/" + clientId);
     }
 
     /**

@@ -58,8 +58,17 @@ public interface ClientService {
      * Updates an existing client record.
      *
      * @param client the new values to save
+     * @param newContactList the new list of contacts for this client by name
      */
-    void updateClient(Client client);
+    void updateClient(Client client, List<String> newContactList);
+
+    /**
+     * Updates an existing client record.
+     *
+     * @param clientId the id of the client to update
+     * @param contactId the id of the contact to remove
+     */
+    void updateClient(String clientId, String contactId);
 
     /**
      * Deletes a client record by ID.

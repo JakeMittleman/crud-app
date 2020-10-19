@@ -2,45 +2,69 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
+  <div th:insert="fragments/header :: header"></div>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Person Listing</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
   </head>
   <body>
-    <div th:insert="fragments/header :: header"></div>
     <h1>Person Listing</h1>
-    <p><a href="/person/create">Create New Person</a></p>
     <th:block th:unless="${#lists.isEmpty(persons)}">
-      <table>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email Address</th>
-            <th>Client</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <th:block th:each="person : ${persons}">
-            <tr>
-              <td th:text="${person.firstName}">First</td>
-              <td th:text="${person.lastName}">Last</td>
-              <td th:text="${person.emailAddress}">first.last@email.com</td>
-              <td>
-                <a th:href="@{/client/read(clientName=${person.clientName})}" th:text="${person.clientName}"></a>
-              </td>
-              <td>
-                <a th:href="'/person/edit/' + ${person.personId}">Edit Person</a>
-                <a th:href="'/person/delete/' + ${person.personId}">Delete Person</a>
-              </td>
-            </tr>
-          </th:block>
-        </tbody>
-      </table>
+      <div class="row justify-content-center">
+        <div class="col-auto">
+          <table class="table table-sm custom-table">
+            <thead>
+              <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email Address</th>
+                <th scope="col">Client</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <th:block th:each="person : ${persons}">
+                <tr>
+                  <td th:text="${person.firstName}">First</td>
+                  <td th:text="${person.lastName}">Last</td>
+                  <td th:text="${person.emailAddress}">first.last@email.com</td>
+                  <td>
+                    <th:block th:unless="${person.client == null}">
+                      <a class="badge badge-info" th:href="@{/client/read(clientName=${person.client.clientName})}"
+                         th:text="${person.client.clientName}"></a>
+                    </th:block>
+                  </td>
+                  <td>
+                    <a class="badge badge-info" th:href="'/person/edit/' + ${person.personId}">Edit Person</a>
+                    <a class="badge badge-info" th:href="'/person/delete/' + ${person.personId}">Delete Person</a>
+                  </td>
+                </tr>
+              </th:block>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <form action="/person/create" method="get">
+        <div class="submit-btn">
+          <input class="btn btn-primary" type="submit" value="New Person">
+        </div>
+      </form>
+    </th:block>
     </th:block>
     <th:block th:if="${#lists.isEmpty(persons)}">
-      <p>No results found.</p>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-10 col-md-offset-4">
+            <div class="alert alert-info">
+              <p>No results found.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </th:block>
   </body>
 </html>

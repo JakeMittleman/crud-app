@@ -5,6 +5,10 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Create Person</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
   </head>
   <body>
     <div th:insert="fragments/header :: header"></div>
@@ -17,43 +21,100 @@
         </th:block>
       </ul>
     </th:block>
-    <form action="/person/create" id="personForm" method="POST">
-      <br/>
-      <label for="firstName">First Name:</label>
-      <input type="text" name="firstName" id="firstName" th:value="${person.firstName}"/>
-      <p id="firstNameError" hidden></p>
-      <br/>
-      <label for="lastName">Last Name:</label>
-      <input type="text" name="lastName" id="lastName" th:value="${person.lastName}"/>
-      <p id="lastNameError" hidden></p>
-      <br/>
-      <label for="emailAddress">Email Address:</label>
-      <input type="email" name="emailAddress" id="emailAddress" th:value="${person.emailAddress}"/>
-      <p id="emailAddressError" hidden></p>
-      <br/>
-      <label for="streetAddress">Street Address:</label>
-      <input type="text" name="streetAddress" id="streetAddress" th:value="${person.streetAddress}"/>
-      <p id="streetAddressError" hidden></p>
-      <br/>
-      <label for="city">City:</label>
-      <input type="text" name="city" id="city" th:value="${person.city}"/>
-      <p id="cityError" hidden></p>
-      <br/>
-      <label for="state">State:</label>
-      <input type="text" name="state" id="state" th:value="${person.state}"/>
-      <p id="stateError" hidden></p>
-      <br/>
-      <label for="zipCode">Zip Code:</label>
-      <input type="text" name="zipCode" id="zipCode" th:value="${person.zipCode}"/>
-      <p id="zipCodeError" hidden></p>
-      <br/>
-      <label for="clientName">Client:</label>
-      <select id="clientName" th:field="${person.clientName}">
-        <option th:each="client : ${clients}" th:value="${client.clientName}" th:text="${client.clientName}"></option>
-      </select>
-      <br/>
-      <input type="submit" name="Submit" value="Submit"/>
-    </form>
+    <div class="container form-boundary">
+      <form class="custom-form was-validated" action="/person/create" id="personForm" method="POST">
+        <div class="form-row justify-content-center">
+          <div class="col-md-6">
+            <div class="md-form form-group">
+              <label for="firstName">First Name</label>
+              <input class="form-control" type="text" name="firstName" id="firstName"
+                     placeholder="First Name" th:value="${person.firstName}" required/>
+              <div class="invalid-feedback">
+                <small id="firstNameError" class="form-text text-muted error" hidden></small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="md-form form-group">
+              <label for="lastName">Last Name</label>
+              <input class="form-control" type="text" name="lastName" id="lastName"
+                     placeholder="Last Name" th:value="${person.lastName}" required/>
+              <div class="invalid-feedback">
+                <small id="lastNameError" class="form-text text-muted error" hidden></small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row justify-content-center">
+          <div class="col-md-12">
+            <div class="md-form form-group">
+              <label for="emailAddress">Email</label>
+              <input class="form-control" type="email" name="emailAddress" id="emailAddress"
+                     placeholder="JohnDoe@gmail.com" th:value="${person.emailAddress}" required/>
+              <div class="invalid-feedback">
+                <small id="emailAddressError" class="form-text text-muted error" hidden></small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row justify-content-center">
+          <div class="col-md-12">
+            <div class="md-form form-group">
+              <label for="streetAddress">Address</label>
+              <input class="form-control" type="text" name="streetAddress" id="streetAddress"
+                     placeholder="123 Fake St." th:value="${person.streetAddress}" required/>
+              <div class="invalid-feedback">
+                <small id="streetAddressError" class="form-text text-muted error" hidden></small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row justify-content-center">
+          <div class="col-md-4">
+              <div class="md-form form-group">
+                <label for="city">City</label>
+                <input class="form-control" type="text" name="city" id="city"
+                       placeholder="Boston" th:value="${person.city}" required/>
+                <div class="invalid-feedback">
+                  <small id="cityError" class="form-text text-muted error" hidden></small>
+                </div>
+              </div>
+          </div>
+          <div class="col-md-4">
+            <div class="md-form form-group">
+              <label for="state">State</label>
+              <input class="form-control" type="text" name="state" id="state"
+                     placeholder="MA" th:value="${person.state}" required/>
+              <div class="invalid-feedback">
+                <small id="stateError" class="form-text text-muted error" hidden></small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="md-form form-group">
+              <label for="zipCode">Zip Code</label>
+              <input class="form-control" type="text" name="zipCode" id="zipCode"
+                     placeholder="12345" th:value="${person.zipCode}" required/>
+              <div class="invalid-feedback">
+                <small id="zipCodeError" class="form-text text-muted error" hidden></small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row justify-content-center">
+          <div class="form-group">
+            <label for="clientName">Client</label>
+            <select class="form-control" id="clientName"
+                    th:placeholder="Client" th:field="${person.client.clientName}">
+              <option class="form-control" th:each="client : ${clients}" th:value="${client.clientName}" th:text="${client.clientName}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="submit-btn">
+          <input class="btn btn-primary" type="submit" name="Submit" value="Submit"/>
+        </div>
+      </form>
+    </div>
     <script type="text/javascript" th:src="@{/js/person_form_validation.js}"></script>
   </body>
 </html>

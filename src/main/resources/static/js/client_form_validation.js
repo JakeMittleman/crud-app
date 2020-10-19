@@ -14,6 +14,8 @@ const cityError = document.getElementById("cityError")
 const state = document.getElementById("state")
 const stateError = document.getElementById("stateError")
 
+$('select').selectpicker();
+
 city.addEventListener("blur", () => {
     if (city.value.length > 50) {
         city.setCustomValidity("City is required with maximum length of 50");
@@ -126,12 +128,11 @@ form.addEventListener("submit", function(event) {
         let element = objects[i];
         if (element.value === "") {
             let error = errors[i][1];
-            error.innerText = errors[i][0] + " is required. Please fill out the " + errors[i][0];
+            error.innerText = errors[i][0] + " is required";
             error.hidden = false;
             valid = false;
         }
     }
-    console.log(valid)
     if (!valid) {
         event.preventDefault();
     }
