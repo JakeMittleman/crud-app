@@ -57,6 +57,7 @@ class DefaultClientServiceTest {
                 .streetAddress("1 main st.")
                 .city("Manhattan")
                 .state("NY")
+                .zipCode("25345")
                 .contacts(new ArrayList<>())
                 .build();
         int id = defaultClientService.createClient(tempClient);
@@ -133,27 +134,58 @@ class DefaultClientServiceTest {
     }
 
     @Test
-    void readClient() {
+    void testReadClientById() {
+        Client retrievedClient = defaultClientService.readClient(newClient.getClientId());
+        assertEquals(newClient, retrievedClient);
     }
 
     @Test
-    void testReadClient() {
-    }
-
-    @Test
-    void createClient() {
+    void testReadClientByName() {
+        Client retrievedClient = defaultClientService.readClient(newClient.getClientName());
+        assertEquals(newClient, retrievedClient);
     }
 
     @Test
     void updateClient() {
+        Client tempClient = Client.builder()
+                .clientName("Marvel")
+                .websiteUri("http://marvel.com")
+                .phoneNumber("555-555-5555")
+                .streetAddress("1 main st.")
+                .city("Hollywood")
+                .state("CA")
+                .zipCode("15342")
+                .contacts(new ArrayList<>())
+                .build();
+        int id = defaultClientService.createClient(tempClient);
+
+        tempClient.setClientName("Disney");
+        tempClient.setClientId(id);
+        defaultClientService.updateClient(tempClient, new ArrayList<>());
+        Client retrievedClient = defaultClientService.readClient(id);
+        assertEquals(tempClient.getClientName(), retrievedClient.getClientName());
+        defaultClientService.deleteClient(id);
     }
 
     @Test
     void testUpdateClient() {
-    }
-
-    @Test
-    void deleteClient() {
+        Person jenna = Person.builder()
+                .firstName("Jenna")
+                .lastName("Roland")
+                .emailAddress("rolsroyce@gmail.com")
+                .streetAddress("25 None Rd.")
+                .city("Red Bank")
+                .state("NJ")
+                .zipCode("98765")
+                .client(newClient)
+                .build();
+        int id = defaultPersonService.createPerson(jenna);
+        Client retrievedClient = defaultClientService.readClient(newClient.getClientId());
+        assertEquals(1, retrievedClient.getContacts().size());
+        defaultClientService.updateClient("" + newClient.getClientId(), "" + id);
+        retrievedClient = defaultClientService.readClient(newClient.getClientId());
+        assertEquals(0, retrievedClient.getContacts().size());
+        defaultPersonService.deletePerson(id);
     }
 
     @Test

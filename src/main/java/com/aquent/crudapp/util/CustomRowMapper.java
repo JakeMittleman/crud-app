@@ -52,9 +52,17 @@ public class CustomRowMapper {
             person.setCity(rs.getString("city"));
             person.setState(rs.getString("state"));
             person.setZipCode(rs.getString("zip_code"));
-            System.out.println(rs.getString("first_name") + " " + rs.getString("client_name"));
             if (rs.getString("client_name") != null) {
-                person.setClient((new ClientRowMapper()).mapRow(rs, rowNum));
+                person.setClient(Client.builder()
+                        .clientId(rs.getInt("client_id"))
+                        .clientName(rs.getString("client_name"))
+                        .websiteUri(rs.getString("website_uri"))
+                        .phoneNumber(rs.getString("client_phone_number"))
+                        .streetAddress(rs.getString("client_street_address"))
+                        .city(rs.getString("client_city"))
+                        .state(rs.getString("client_state"))
+                        .zipCode(rs.getString("client_zip_code"))
+                        .build());
             } else {
                 person.setClient(null);
             }

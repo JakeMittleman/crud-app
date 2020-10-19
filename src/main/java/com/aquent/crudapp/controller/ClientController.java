@@ -162,7 +162,6 @@ public class ClientController {
     public ModelAndView delete(@PathVariable Integer clientId) {
         ModelAndView mav = new ModelAndView("client/delete");
         mav.addObject("client", clientService.readClient(clientId));
-        System.out.println(clientService.listContacts(clientId));
         mav.addObject("contacts", clientService.listContacts(clientId));
         return mav;
     }

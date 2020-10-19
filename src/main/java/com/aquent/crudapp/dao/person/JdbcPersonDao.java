@@ -24,10 +24,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class JdbcPersonDao implements PersonDao {
 
-    private static final String SQL_LIST_PEOPLE = "SELECT p.*, c.* FROM person p left join client c on (p.client_id = c.client_id) ORDER BY first_name, last_name, person_id";
-    private static final String SQL_LIST_CONTACTS_BY_NAME = "SELECT p.*, c.* FROM person p left join client c on (p.client_id = c.client_id) WHERE c.client_name = :clientName ORDER BY first_name, last_name, person_id";
-    private static final String SQL_LIST_CONTACTS_BY_ID = "SELECT p.*, c.* FROM person p left join client c on (p.client_id = c.client_id) WHERE c.client_id = :clientId ORDER BY first_name, last_name, person_id";
-    private static final String SQL_READ_PERSON = "SELECT * FROM person p left join client c on (p.client_id = c.client_id) WHERE p.person_id = :personId";
+    private static final String SQL_LIST_PEOPLE = "SELECT p.*, " +
+            "c.client_id, c.client_name, c.website_uri, c.phone_number as client_phone_number," +
+            "c.street_address as client_street_address, c.city as client_city, c.state as client_state, c.zip_code as client_zip_code " +
+            " FROM person p left join client c on (p.client_id = c.client_id) ORDER BY first_name, last_name, person_id";
+    private static final String SQL_LIST_CONTACTS_BY_NAME = "SELECT p.*, " +
+            "c.client_id, c.client_name, c.website_uri, c.phone_number as client_phone_number," +
+            "c.street_address as client_street_address, c.city as client_city, c.state as client_state, c.zip_code as client_zip_code " +
+            "FROM person p left join client c on (p.client_id = c.client_id) WHERE c.client_name = :clientName ORDER BY first_name, last_name, person_id";
+    private static final String SQL_LIST_CONTACTS_BY_ID = "SELECT p.*, " +
+            "c.client_id, c.client_name, c.website_uri, c.phone_number as client_phone_number," +
+            "c.street_address as client_street_address, c.city as client_city, c.state as client_state, c.zip_code as client_zip_code " +
+            " FROM person p left join client c on (p.client_id = c.client_id) WHERE c.client_id = :clientId ORDER BY first_name, last_name, person_id";
+    private static final String SQL_READ_PERSON = "SELECT p.*, " +
+            "c.client_id, c.client_name, c.website_uri, c.phone_number as client_phone_number," +
+            "c.street_address as client_street_address, c.city as client_city, c.state as client_state, c.zip_code as client_zip_code " +
+            " FROM person p left join client c on (p.client_id = c.client_id) WHERE p.person_id = :personId";
     private static final String SQL_DELETE_PERSON = "DELETE FROM person WHERE person_id = :personId";
     private static final String SQL_UPDATE_PERSON = "UPDATE person SET (first_name, last_name, email_address, street_address, city, state, zip_code, client_id)"
                                                   + " = (:firstName, :lastName, :emailAddress, :streetAddress, :city, :state, :zipCode, :clientId)"
@@ -77,10 +89,7 @@ public class JdbcPersonDao implements PersonDao {
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
     public void updatePerson(Person person) {
-        System.out.println(person);
-        System.out.println("simplePerson " + mapPerson(person));
         namedParameterJdbcTemplate.update(SQL_UPDATE_PERSON, new BeanPropertySqlParameterSource(mapPerson(person)));
-        System.out.println(readPerson(person.getPersonId()));
     }
 
     @Override
@@ -93,7 +102,6 @@ public class JdbcPersonDao implements PersonDao {
     }
 
     private PersonSimple mapPerson(Person person) {
-        System.out.println(person);
         return PersonSimple.builder()
                 .personId(person.getPersonId())
                 .firstName(person.getFirstName())

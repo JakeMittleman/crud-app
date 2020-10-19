@@ -53,13 +53,17 @@ public class DefaultClientService implements ClientService {
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public Client readClient(Integer id) {
-        return clientDao.readClient(id);
+        Client client = clientDao.readClient(id);
+        client.setContacts(listContacts(id));
+        return client;
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public Client readClient(String clientName) {
-        return clientDao.readClient(clientName);
+        Client client = clientDao.readClient(clientName);
+        client.setContacts(listContacts(clientName));
+        return client;
     }
 
     @Override
@@ -68,17 +72,20 @@ public class DefaultClientService implements ClientService {
         return clientDao.createClient(client);
     }
 
+    /**
+     * This method is for changing the contacts via the edit page for the given client.
+     * @param client the edited client
+     * @param newContactList the new list of contacts for this client by name
+     */
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
     public void updateClient(Client client, List<String> newContactList) {
-        System.out.println(client.getContacts());
         if (newContactList != null) {
             List<Person> newContacts = personDao.listPeople()
                     .stream()
                     .filter(person -> newContactList.contains(person.getFirstName() + ' ' + person.getLastName()))
                     .collect(Collectors.toList());
             client.setContacts(newContacts);
-            clientDao.updateClient(client);
         }
         List<Person> allPeople = personDao.listPeople();
         for (Person person : allPeople) {
@@ -94,13 +101,18 @@ public class DefaultClientService implements ClientService {
                 }
             }
         }
+        clientDao.updateClient(client);
     }
 
+    /**
+     * This method is for removing contacts on the single client view page.
+     * @param clientId the id of the client to update
+     * @param contactId the id of the contact to remove
+     */
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
     public void updateClient(String clientId, String contactId) {
         Client client = clientDao.readClient(Integer.parseInt(clientId));
-        System.out.println("client before edits: " + client);
         client.setContacts(client.getContacts()
                 .stream()
                 .filter(contact -> !contact.getPersonId().equals(Integer.parseInt(contactId)))
@@ -108,7 +120,6 @@ public class DefaultClientService implements ClientService {
         );
         Person person = personDao.readPerson(Integer.parseInt(contactId));
         person.setClient(null);
-        System.out.println("client after edits: " + client);
         personDao.updatePerson(person);
         clientDao.updateClient(client);
     }
