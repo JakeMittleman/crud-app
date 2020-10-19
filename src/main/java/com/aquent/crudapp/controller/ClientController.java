@@ -146,6 +146,12 @@ public class ClientController {
         }
     }
 
+    /**
+     * Removes a contact from a client
+     * @param clientId the client id to remove a contact from
+     * @param contactId the contact id to be removed from a client
+     * @return redirect to the same page
+     */
     @PostMapping(value = "remove/{clientId}/contact/{contactId}")
     public ModelAndView remove(@PathVariable String clientId, @PathVariable String contactId) {
         clientService.updateClient(clientId, contactId);

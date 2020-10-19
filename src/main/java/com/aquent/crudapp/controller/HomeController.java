@@ -19,6 +19,5 @@ public class HomeController {
     @GetMapping("/")
     public ModelAndView index() {
         return new ModelAndView("home/index");
-        // return "redirect:/person/create";
     }
 }

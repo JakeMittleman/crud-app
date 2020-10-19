@@ -24,6 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class JdbcPersonDao implements PersonDao {
 
+    /*
+    Manually selecting column names to alias them for Row Mapping
+     */
     private static final String SQL_LIST_PEOPLE = "SELECT p.*, " +
             "c.client_id, c.client_name, c.website_uri, c.phone_number as client_phone_number," +
             "c.street_address as client_street_address, c.city as client_city, c.state as client_state, c.zip_code as client_zip_code " +

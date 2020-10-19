@@ -80,6 +80,11 @@ public class DefaultClientService implements ClientService {
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
     public void updateClient(Client client, List<String> newContactList) {
+        /*
+        If the selectpicker (on the edit page) is empty it returns null instead of an empty list.
+        In this case on the edit page the user has unchecked every contact to remove them from this client.
+        Here we're checking to see if any were left checked
+         */
         if (newContactList != null) {
             List<Person> newContacts = personDao.listPeople()
                     .stream()
@@ -87,6 +92,13 @@ public class DefaultClientService implements ClientService {
                     .collect(Collectors.toList());
             client.setContacts(newContacts);
         }
+
+        /*
+        Here we're getting all people and updating people who
+        1. Used to be associated with this client
+        2. Need to now be associated with this client.
+        A further enhancement in the future would be to create stored SQL queries to handle these fetches for us.
+         */
         List<Person> allPeople = personDao.listPeople();
         for (Person person : allPeople) {
             if (client.getContacts().contains(person)) {
