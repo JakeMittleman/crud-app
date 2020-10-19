@@ -45,8 +45,8 @@ public class DefaultPersonService implements PersonService {
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
     public Integer createPerson(Person person) {
-        if (person.getClientName() != null) {
-            person.setClientName("" + clientDao.readClient(person.getClientName()).getClientId());
+        if (person.getClient() != null) {
+            person.setClient(clientDao.readClient(person.getClient().getClientName()));
         }
         return personDao.createPerson(person);
     }
@@ -54,9 +54,8 @@ public class DefaultPersonService implements PersonService {
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
     public void updatePerson(Person person) {
-        System.out.println("service:" + person);
-        if (person.getClientName() != null) {
-            person.setClientName("" + clientDao.readClient(person.getClientName()).getClientId());
+        if (person.getClient() != null) {
+            person.setClient(clientDao.readClient(person.getClient().getClientName()));
         }
         personDao.updatePerson(person);
     }

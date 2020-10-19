@@ -5,48 +5,69 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Client Directory</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
 </head>
 <body>
 <div th:insert="fragments/header :: header"></div>
 <h1 th:text="${client.clientName}"></h1>
-    <table>
-        <thead>
-        <tr>
-<!--            <th>Company Name</th>-->
-            <th>Website</th>
-            <th>Phone Number</th>
-            <th>Address</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td th:text="${client.websiteUri}">Website</td>
-                <td th:text="${formatter.formatPhoneNumber(client.phoneNumber)}">Phone Number</td>
-                <td th:text="${formatter.formatAddress(client.streetAddress, client.city, client.state, client.zipCode)}">Address</td>
-                <td>
-                    <a th:href="'/client/edit/' + ${client.clientId}">Edit Client</a>
-                    <a th:href="'/client/delete/' + ${client.clientId}">Delete Client</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table>
-        <thead>
-        <tr>
-            <th>Contacts</th>
-        </tr>
-        </thead>
-        <tbody>
-            <th:block th:each="contact : ${contacts}">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <table class="table table-sm custom-table">
+                <thead>
                 <tr>
-                    <td th:text="${contact.firstName}">First</td>
-                    <td th:text="${contact.lastName}">Last</td>
-                    <td th:text="${contact.emailAddress}">first.last@email.com</td>
-                </tr>
-            </th:block>
-        </tbody>
-    </table>
+                    <th>Website</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${client.websiteUri}">Website</td>
+                        <td th:text="${formatter.formatPhoneNumber(client.phoneNumber)}">Phone Number</td>
+                        <td th:text="${formatter.formatAddress(client.streetAddress, client.city, client.state, client.zipCode)}">Address</td>
+                        <td>
+                            <a class="badge badge-info" th:href="'/client/edit/' + ${client.clientId}">Edit Client</a>
+                            <a class="badge badge-info" th:href="'/client/delete/' + ${client.clientId}">Delete Client</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<div class="row justify-content-center">
+    <div class="col-auto">
+        <table class="table table-sm custom-table">
+            <thead>
+            <tr>
+                <th colspan="5">Contacts</th>
+            </tr>
+            </thead>
+            <tbody>
+                <th:block th:each="contact : ${contacts}">
+                    <tr>
+                        <td th:text="${contact.firstName}">First</td>
+                        <td th:text="${contact.lastName}">Last</td>
+                        <td th:text="${contact.emailAddress}">first.last@email.com</td>
+                        <td>
+                            <form th:action="'/person/read/' + ${contact.personId}" method="get">
+                                <button type="submit" class="badge badge-info">View Contact</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="'/client/remove/' + ${client.clientId} +
+                                '/contact/' + ${contact.personId}" method="post">
+                                <button type="submit" class="badge badge-info">Remove Contact</button>
+                            </form>
+                        </td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+    </div>
+</div>
 <th:block th:if="${#lists.isEmpty(client)}">
     <p>No results found.</p>
 </th:block>

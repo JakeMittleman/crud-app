@@ -1,0 +1,46 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Client Directory</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+</head>
+<body>
+<div th:insert="fragments/header :: header"></div>
+<h1 th:text="${person.firstName} + ' ' + ${person.lastName}"></h1>
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <table class="table table-sm custom-table">
+                <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email Address</th>
+                    <th>Client</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${person.firstName}">First Name</td>
+                        <td th:text="${person.lastName}">Last Name</td>
+                        <td th:text="${person.emailAddress}">Email Address</td>
+                        <td>
+                            <a class="badge badge-info" th:href="@{/client/read(clientName=${person.client.clientName})}"
+                               th:text="${person.client.clientName}"></a>
+                        </td>
+                        <td>
+                            <a class="badge badge-info" th:href="'/person/edit/' + ${person.personId}">Edit Person</a>
+                            <a class="badge badge-info" th:href="'/person/delete/' + ${person.personId}">Delete Person</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,15 +1,34 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+</head>
 <body>
-<footer th:fragment="header">
+<header class="header" th:fragment="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <th:block th:unless="${#httpServletRequest.requestURI == '/'}">
-        <a href="/">Go Home </a>
+        <a class="navbar-brand" href="/">Home </a>
     </th:block>
-    <a href="/person/create">Create a Person </a>
-    <a href="/person/list">View People </a>
-    <a href="/client/create">Create a Client </a>
-    <a href="/client/list">View Clients</a>
-    <br>
-</footer>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-4">
+                <li class="nav-item">
+                    <a class="nav-link" href="/person/create">Create a Person </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/person/list">View People </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/client/create">Create a Client </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/client/list">View Clients</a>
+                </li>
+            </ul>
+            <br>
+        </div>
+    </nav>
+</header>
 </body>
 </html>
